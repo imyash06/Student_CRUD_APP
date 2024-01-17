@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Student CRUD</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+
+<body>
+	<br><br><br>
+	<h1 class="text-danger text-center">STUDENT DETAILS</h1>
+	<br><br><br>
+
+
+	<div class="container">
+		<button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal">ADD
+			STUDENT</button>
+		<br><br>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th scope="col">NAME</th>
+					<th scope="col">SURNAME</th>
+					<th scope="col">ROLLNO</th>
+					<th scope="col">STUDENTID</th>
+					<th scope="col">SCHOOL</th>
+					<th scope="col">AGE</th>
+					<th scope="col">ACTION</th>
+				</tr>
+			</thead>
+			<tbody id="myTable">
+
+			</tbody>
+		</table>
+	</div>
+
+	<!-- Add Student modal start-->
+	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="exampleModalLabel">ADD STUDENT</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form id="insert">
+						<div class="mb-3">
+							<label for="recipient-name" class="col-form-label">NAME :</label>
+							<input type="text" class="form-control" id="add-name" name="name">
+						</div>
+						<div class="mb-3">
+							<label for="message-text" class="col-form-label">SURNAME :</label>
+							<input type="text" class="form-control" id="add-surname" name="surname">
+						</div>
+						<div class="mb-3">
+							<label for="message-text" class="col-form-label">ROLLNO :</label>
+							<input type="text" class="form-control" id="add-rollno" name="rollno">
+						</div>
+						<div class="mb-3">
+							<label for="message-text" class="col-form-label">STUDENTID :</label>
+							<input type="text" class="form-control" id="add-studentid" name="studentid">
+						</div>
+						<div class="mb-3">
+							<label for="message-text" class="col-form-label">SCHOOL :</label>
+							<input type="text" class="form-control" id="add-school" name="school">
+						</div>
+						<div class="mb-3">
+							<label for="message-text" class="col-form-label">AGE :</label>
+							<input type="text" class="form-control" id="add-age" name="age">
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">SAVE STUDENT</button>
+						</div>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- Add Student modal end -->
+
+	<!-- Edit Student modal start -->
+
+	<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="exampleModalLabel">EDIT STUDENT DETAILS</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="mb-3">
+							<label for="recipient-name" class="col-form-label">NAME :</label>
+							<input type="text" class="form-control" id="edit-name">
+							<input type="hidden" class="form-control" id="edit-id">
+						</div>
+						<div class="mb-3">
+							<label for="message-text" class="col-form-label">SURNAME :</label>
+							<input type="text" class="form-control" id="edit-surname">
+						</div>
+						<div class="mb-3">
+							<label for="message-text" class="col-form-label">ROLLNO :</label>
+							<input type="text" class="form-control" id="edit-rollno">
+						</div>
+						<div class="mb-3">
+							<label for="message-text" class="col-form-label">STUDENTID :</label>
+							<input type="text" class="form-control" id="edit-studentid">
+						</div>
+						<div class="mb-3">
+							<label for="message-text" class="col-form-label">SCHOOL :</label>
+							<input type="text" class="form-control" id="edit-school">
+						</div>
+						<div class="mb-3">
+							<label for="message-text" class="col-form-label">AGE :</label>
+							<input type="text" class="form-control" id="edit-age">
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CLOSE</button>
+					<button type="button" class="btn btn-primary" onclick="updateStudent()"
+						data-bs-dismiss="exampleModalLabel"> UPDATE STUDENT </button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Edit Student modal end -->
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+		crossorigin="anonymous"></script>
+
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+
+	<script>
+
+		$(document).ready(function () {
+
+			getTableData();
+
+		});
+
+
+
+		function getTableData() {
+
+			$.ajax({
+				type: "GET",
+				contentType: "application/json",
+				url: "/student/readstudent", //we have not use id in controller then no need to give id.
+				//data: JSON.stringify(emp),
+				dataType: 'json',
+				cache: false,
+
+				success: function (data) {
+
+					var tableValue = '';
+
+					for (var i = 0; i < data.length; i++) {
+						tableValue += '<tr>'
+							+ '<td>' + data[i].name + '</td>'
+							+ '<td>' + data[i].surname + '</td>'
+							+ '<td>' + data[i].rollno + '</td>'
+							+ '<td>' + data[i].studentid + '</td>'
+							+ '<td>' + data[i].school + '</td>'
+							+ '<td>' + data[i].age + '</td>'
+							+ '<td>' + '<button type="button"  data=' + data[i].id + ' class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal" onclick="getStudentDetailsByID(' + data[i].id + ');"  >EDIT</button>  <button type="button" class="btn btn-danger"data-bs-target="#deleteModal" onClick="deleteStudent(' + data[i].id + ');" > DELETE </button>' + '</td>'
+					}
+
+					$('#myTable').html(tableValue);
+				},
+				error: function (e) {
+					alert('error')
+				}
+
+			});
+		}
+
+		$(document).on('submit', '#insert', function (e) {
+			
+			e.preventDefault();
+			
+
+			$.ajax({
+				method: "POST",
+				
+				// contentType: "application/x-www-form-urlencoded",
+				url: "/student/addstudent", // Adjust the URL as needed
+				data: new FormData(this),
+				contentType: false,
+				processData: false,
+				cache: false,
+
+
+				success: function (data) {
+					alert('Saved!');
+				},
+				error: function (e) {
+					alert('Error');
+				}
+			});
+
+		});
+
+
+
+		function saveStudent() {
+
+			let name = document.getElementById('add-name').value;
+			let surname = document.getElementById('add-surname').value;
+			let rollno = document.getElementById('add-rollno').value;
+			let studentid = document.getElementById('add-studentid').value;
+			let school = document.getElementById('add-school').value;
+			let age = document.getElementById('add-age').value;
+
+			var stud =
+			{
+				"name": name,
+				"surname": surname,
+				"rollno": rollno,
+				"studentid": studentid,
+				"school": school,
+				"age": age
+			}
+
+			$.ajax({
+				type: "POST",
+				contentType: "application/json",
+				url: "/student/addstudent",
+				data: JSON.stringify(stud),
+				dataType: 'json',
+				//cache: false,
+
+				success: function (data) {
+
+					alert('saved!')
+				},
+				error: function (e) {
+
+					alert('error')
+				}
+			});
+		}
+
+		function getStudentDetailsByID(id) {
+
+			$.ajax({
+				type: "GET",
+				contentType: "application/json",
+				url: "/student/read/" + id,
+				//data: JSON.stringify(emp),
+				dataType: 'json',
+				cache: false,
+
+				success: function (data) {
+
+					$('#edit-id').val(data.id);
+					$('#edit-name').val(data.name);
+					$('#edit-surname').val(data.surname);
+					$('#edit-rollno').val(data.rollno);
+					$('#edit-studentid').val(data.studentid);
+					$('#edit-school').val(data.school);
+					$('#edit-age').val(data.age);
+
+				},
+
+				error: function (e) {
+
+					alert('error comes');
+				}
+			});
+
+		}
+
+		function updateStudent() {
+
+			let id = document.getElementById('edit-id').value;
+			let name = document.getElementById('edit-name').value;
+			let surname = document.getElementById('edit-surname').value;
+			let rollno = document.getElementById('edit-rollno').value;
+			let studentid = document.getElementById('edit-studentid').value;
+			let school = document.getElementById('edit-school').value;
+			let age = document.getElementById('edit-age').value;
+
+
+			let stud =
+			{
+				"id": id,
+				"name": name,
+				"surname": surname,
+				"studentid": studentid,
+				"rollno": rollno,
+				"school": school,
+				"age": age
+			}
+
+			$.ajax({
+				type: "POST",
+				contentType: "application/json",
+				url: "/student/updatestudent/" + id,
+				data: JSON.stringify(stud),
+				dataType: 'json',
+				cache: false,
+				success: function (data) {
+
+					alert('updated')
+
+				},
+				error: function (e) {
+
+					alert('error')
+				}
+			});
+
+		}
+		function deleteStudent(id) {
+
+			$.ajax({
+				type: "DELETE",
+				contentType: "application/json",
+				url: "/student/deletestudent/" + id,
+				//data: JSON.stringify(prod),
+				//dataType: 'json',
+				cache: false,
+				success: function (data) {
+
+					getTableData();  //with the help of this functon we got response
+					alert('deleted')
+
+				}, error: function (e) {
+
+					alert('error')
+				}
+			});
+		}
+
+
+	</script>
+</body>
+
+</html>
